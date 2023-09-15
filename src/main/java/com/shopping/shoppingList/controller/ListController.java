@@ -1,5 +1,8 @@
 package com.shopping.shoppingList.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shopping.shoppingList.models.Items;
 import com.shopping.shoppingList.repositories.ItemsRepository;
 import com.shopping.shoppingList.service.ItemsService;
@@ -40,8 +43,8 @@ public class ListController {
         return ResponseEntity.ok("items saved");
     }
 
-    @GetMapping("/itemById")
-    public ResponseEntity<?> findbyId(@RequestParam int id) {
+    @GetMapping("/itemById/{id}")
+    public ResponseEntity<?> findbyId(@PathVariable int id) {
         Optional<Items> item = itemsRepository.findById(id);
         if (item.isPresent())
             return ResponseEntity.ok(item.get());
@@ -56,7 +59,6 @@ public class ListController {
         return ResponseEntity.ok("Item Saved");
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/deleteAll")
     public ResponseEntity<?> deleteAllItems(){
         itemsRepository.deleteAll();
